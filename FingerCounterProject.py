@@ -23,6 +23,9 @@ for imPath in myList:
 
 detector = htm.handDetector(maxHands=1, detectionCon=0.75)
 
+#* figer tip ids
+tipIds = [4, 8, 12, 16, 20]
+
 #* main loop
 while True:
     success, img = cap.read()
@@ -31,10 +34,21 @@ while True:
 
     lmList = detector.findPosition(img, draw=False)
     if len(lmList) != 0:
-        
-        if lmList[8][2] < lmList[6][2]:
-            print("Index finger open") 
+        fingers = []
 
+        #* thumb
+        if lmList[tipIds[0]][1] < lmList[tipIds[0]-1][1]:
+            fingers.append(1)
+        else:
+            fingers.append(0)
+        #* 4 fingers
+        for id in range(1, 5):
+            if lmList[tipIds[id]][2] < lmList[tipIds[id]-2][2]:
+                fingers.append(1)
+            else:
+                fingers.append(0)
+
+        print(fingers)
 
     #* overlay image on top of camera feed
     h, w, c = overlayList[1].shape #* height, width, channels
