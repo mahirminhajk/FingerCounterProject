@@ -30,7 +30,7 @@ tipIds = [4, 8, 12, 16, 20]
 while True:
     success, img = cap.read()
 
-    img = detector.findHands(img)
+    img = detector.findHands(img, draw=False)
 
     lmList = detector.findPosition(img, draw=False)
     if len(lmList) != 0:
@@ -48,11 +48,13 @@ while True:
             else:
                 fingers.append(0)
 
-        print(fingers)
+        #print(fingers)
+        totalFingers = fingers.count(1)
+        print(totalFingers)
 
-    #* overlay image on top of camera feed
-    h, w, c = overlayList[1].shape #* height, width, channels
-    img[0:h, 0:w] = overlayList[1] 
+        #* overlay image on top of camera feed
+        h, w, c = overlayList[totalFingers].shape #* height, width, channels
+        img[0:h, 0:w] = overlayList[totalFingers] 
 
     #* fps
     cTime = time.time()
